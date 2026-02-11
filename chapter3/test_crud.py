@@ -1,5 +1,4 @@
 """Testing SQLAlchemy Helper Functions"""
-
 import pytest
 from datetime import date
 
@@ -8,6 +7,7 @@ from database import SessionLocal
 
 # use a test date of 4/1/2024 to test the min_last_changed_date.
 test_date = date(2024,4,1)
+
 @pytest.fixture(scope="function")
 def db_session():
     """This starts a database session and closes it when done"""
@@ -32,6 +32,7 @@ def test_get_players_by_name(db_session):
     assert len(players) == 1
     assert players[0].player_id == 2009
 
+
 def test_get_all_performances(db_session):
     """Tests that the count of performances in the database is
     what is expected - all the performances"""
@@ -40,9 +41,11 @@ def test_get_all_performances(db_session):
 
 def test_get_new_performances(db_session):
     """Tests that the count of performances in the database is
-        what is expected"""
+    what is expected"""
     performances = crud.get_performances(db_session, skip=0, limit=18000,
-                                            min_last_changed_date=test_date)
+                                        min_last_changed_date=test_date)
+    assert len(performances) == 2711
+    
 #test the count functions
 def test_get_player_count(db_session):
     player_count = crud.get_player_count(db_session)
